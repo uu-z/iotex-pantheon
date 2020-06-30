@@ -153,3 +153,21 @@ services:
       - election
       - database
     command: iotex-server
+
+  layer2:
+    container_name: iotex-layer2
+    restart: on-failure
+    image: ${IOTEX_LAYER2_IMAGE}
+    ports:
+      - 50001:50001
+    volumes:
+      - $IOTEX_HOME/data/layer2:/var/data
+    environment:
+      SERVER_PORT: 50001
+      DB_PATH: /var/data/data
+      CHAIN_PRC_SECURE: "false"
+      CHAIN_RPC_TARGET: iotex:14014
+      CHAIN_CAS_PRICE: "0"
+      CHAIN_ACCOUNTS: 0806c458b262edd333a191e92f561aff338211ee3e18ab315a074a2d82aa343f
+    links:
+      - iotex
