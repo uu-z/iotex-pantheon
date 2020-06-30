@@ -1,4 +1,4 @@
-version: '2'
+version: "2"
 
 services:
   database:
@@ -11,7 +11,7 @@ services:
     volumes:
       - $IOTEX_HOME/data/mysql:/var/lib/mysql:rw
     environment:
-       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
 
   iotex:
     container_name: iotex
@@ -173,11 +173,16 @@ services:
       - iotex
 
   xun-monitor-db:
+    container_name: xun-monitor-db
     image: ${XUN_MONITOR_DB}
     restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - $IOTEX_HOME/data/xun-monitor-db:/var/lib/mysql
+
   xun-monitor:
+    container_name: xun-monitor
     image: ${XUN_MONITOR_IMAGE}
     restart: always
     logging:
@@ -190,10 +195,18 @@ services:
     environment:
       MYSQL_HOST: xun-monitor-db
       CHAIN_API_URL: layer2:50001
+      ADMIN_USER: ${ADMIN_USER}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_USER: ${MYSQL_ROOT_USER}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      EMBEDDEDDB: ${EMBEDDEDDB}
     ports:
       - "8080:8080"
     volumes:
-      # - /etc/localtime:/etc/localtime:ro
-      # - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
       - $IOTEX_HOME/data/xun-monitor/videos:/opt/shinobi/videos
       - $IOTEX_HOME/data/xun-monitor/streams:/dev/shm/streams
