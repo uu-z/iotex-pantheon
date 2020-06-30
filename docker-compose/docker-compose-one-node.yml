@@ -171,3 +171,29 @@ services:
       CHAIN_ACCOUNTS: 0806c458b262edd333a191e92f561aff338211ee3e18ab315a074a2d82aa343f
     links:
       - iotex
+
+  xun-monitor-db:
+    image: ${XUN_MONITOR_DB}
+    restart: always
+    volumes:
+      - $IOTEX_HOME/data/xun-monitor-db:/var/lib/mysql
+  xun-monitor:
+    image: ${XUN_MONITOR_IMAGE}
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+    links:
+      - xun-monitor-db
+      - layer2
+    environment:
+      MYSQL_HOST: xun-monitor-db
+      CHAIN_API_URL: layer2:50001
+    ports:
+      - "8080:8080"
+    volumes:
+      # - /etc/localtime:/etc/localtime:ro
+      # - /etc/timezone:/etc/timezone:ro
+      - $IOTEX_HOME/data/xun-monitor/videos:/opt/shinobi/videos
+      - $IOTEX_HOME/data/xun-monitor/streams:/dev/shm/streams
