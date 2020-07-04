@@ -16,7 +16,7 @@ services:
   iotex:
     container_name: iotex
     image: ${IOTEX_IMAGE}
-    restart: on-failure
+    restart: always
     ports:
       - 4689:4689
       - 14014:14014
@@ -35,6 +35,7 @@ services:
   monitor:
     container_name: iotex-monitor
     image: ${IOTEX_MONITOR_IMAGE}
+    restart: always
     ports:
       - 3000:3000
       - 9090:9090
@@ -45,7 +46,7 @@ services:
 
   xun-explorer:
     container_name: iotex-xun-explorer
-    restart: on-failure
+    restart: always
     image: ${IOTEX_XUN_EXPLORER_IMAGE}
     environment:
       NODE_CONFIG_ENV: enterprise
@@ -70,6 +71,7 @@ services:
   vault:
     container_name: iotex-vault
     image: ${IOTEX_VAULT_IMAGE}
+    restart: always
     cap_add:
       - IPC_LOCK
     ports:
@@ -86,7 +88,7 @@ services:
 
   high-table:
     container_name: iotex-high-table
-    restart: on-failure
+    restart: always
     image: ${IOTEX_HIGH_TABLE_IMAGE}
     ports:
       - 8090:8090
@@ -101,7 +103,7 @@ services:
 
   golden-gate:
     container_name: iotex-golden-gate
-    restart: on-failure
+    restart: always
     image: ${IOTEX_GOLDEN_GATE_IMAGE}
     ports:
       - 15015:15015
@@ -130,13 +132,14 @@ services:
   election:
     container_name: iotex-election
     image: ${IOTEX_ELECTION_IMAGE}
+    restart: always
     volumes:
       - $IOTEX_HOME/etc/election/config.yaml:/etc/iotex/server.yaml:ro
     command: iotex-server -config=/etc/iotex/server.yaml
 
   analytics:
     container_name: iotex-analytics
-    restart: on-failure
+    restart: always
     image: ${IOTEX_ANALYTICS_IMAGE}
     ports:
       - 8089:8089
@@ -156,7 +159,7 @@ services:
 
   layer2:
     container_name: iotex-layer2
-    restart: on-failure
+    restart: always
     image: ${IOTEX_LAYER2_IMAGE}
     ports:
       - 50001:50001
